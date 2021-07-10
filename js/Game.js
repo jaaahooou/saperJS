@@ -22,6 +22,8 @@ class Game extends Ui {
     },
   };
 
+  #counter = new Counter();
+
   #numberOfRows = null;
   #numberOfCols = null;
   #numberOfmines = null;
@@ -34,6 +36,7 @@ class Game extends Ui {
 
   initializeGame() {
     this.#handleElemenst();
+    this.#counter.init();
     this.#newGame();
   }
 
@@ -45,6 +48,7 @@ class Game extends Ui {
     this.#numberOfRows = rows;
     this.#numberOfCols = cols;
     this.#numberOfmines = mines;
+    this.#counter.setValue(this.#numberOfmines);
 
     this.#setStyles();
     this.#generateCells();
@@ -98,8 +102,15 @@ class Game extends Ui {
     const cell = this.#cells[rowIndex][colIndex];
 
     if (cell.isReveal) return;
-
-    cell.toggleFlag();
+    if (cell.isFlagged) {
+      this.#counter.increment();
+      cell.toggleFlag();
+      return;
+    }
+    if (!!this.#counter.value) {
+      this.#counter.decrement();
+      cell.toggleFlag();
+    }
   };
 
   #setStyles() {

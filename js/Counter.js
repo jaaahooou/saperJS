@@ -5,10 +5,10 @@ export class Counter extends Ui {
   #element = null;
 
   init() {
-    this.element = this.getElement(this.UiSelectors.counter);
+    this.#element = this.getElement(this.UiSelectors.counter);
   }
 
-  serValue(value) {
+  setValue(value) {
     this.value = value;
     this.#updateValue();
   }
@@ -20,7 +20,7 @@ export class Counter extends Ui {
 
   decrement() {
     this.value--;
-    this.#updateValue;
+    this.#updateValue();
   }
   #updateValue() {
     this.#element.textContent = this.value;
