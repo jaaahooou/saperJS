@@ -24,10 +24,16 @@ class Game {
 
     }
 
-    #newGame(rows,cols,mines){
+    dupa(){
+        console.log(message)
+    }
+
+    #newGame(rows = this.#config.easy.rows,cols = this.#config.easy.cols,mines = this.#config.easy.mines){
         this.#numberOfRows = rows;
         this.#numberOfCols = cols;
         this.#numberOfmines = mines;
+
+   
 
     }
 
@@ -35,10 +41,11 @@ class Game {
     #numberOfCols = null;
     #numberOFmines = null;
 
+
     
 }
 
-window.omload = function(){
+window.onload = function(){
     const game = new Game();
     game.initializeGame();
 }
