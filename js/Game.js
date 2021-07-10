@@ -1,5 +1,7 @@
 import { Cell } from "./Cell.js";
 import { Ui } from "./Ui.js";
+import { Counter } from "./Counter.js";
+
 class Game extends Ui {
   #config = {
     // ========= rendering buttons for each difficult
@@ -84,11 +86,21 @@ class Game extends Ui {
     const target = e.target;
     const rowIndex = parseInt(target.getAttribute("data-y"), 10);
     const colIndex = parseInt(target.getAttribute("data-x"), 10);
-    console.log(colIndex);
+
     this.#cells[rowIndex][colIndex].revealCell();
   };
 
-  #handleCellContextMenu = (e) => {};
+  #handleCellContextMenu = (e) => {
+    e.preventDefault();
+    const target = e.target;
+    const rowIndex = parseInt(target.getAttribute("data-y"), 10);
+    const colIndex = parseInt(target.getAttribute("data-x"), 10);
+    const cell = this.#cells[rowIndex][colIndex];
+
+    if (cell.isReveal) return;
+
+    cell.toggleFlag();
+  };
 
   #setStyles() {
     document.documentElement.style.setProperty(

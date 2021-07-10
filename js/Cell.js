@@ -18,6 +18,11 @@ export class Cell extends Ui {
     return element;
   }
 
+  toggleFlag() {
+    this.isFlagged = !this.isFlagged;
+    this.element.classList.toggle("cell--is-flag");
+  }
+
   revealCell() {
     this.isReveal = true;
     this.element.classList.remove("border--concave");
