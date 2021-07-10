@@ -21,5 +21,6 @@ export class Cell extends Ui {
   revealCell() {
     this.isReveal = true;
     this.element.classList.remove("border--concave");
+    this.element.classList.add("border--revealed");
   }
 }
