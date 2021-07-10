@@ -9,12 +9,17 @@ export class Cell extends Ui {
     this.isMine = false;
     this.isReveal = false;
     this.isFlegged = false;
-    this.selector = `[data-x="${this.x}"][data-y="${this.y}]`;
+    this.selector = `[data-x="${this.x}"][data-y="${this.y}"]`;
     this.element = null;
   }
 
   createElement() {
-    const element = `<div class="cell border border--concave" data-cell data-x="${this.x} data-y="${this.y}"></div>`;
+    const element = `<div class="cell border border--concave" data-cell data-x="${this.x}" data-y="${this.y}"></div>`;
     return element;
+  }
+
+  revealCell() {
+    this.isReveal = true;
+    this.element.classList.remove("border--concave");
   }
 }
