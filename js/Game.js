@@ -1,5 +1,6 @@
 import { Cell } from "./Cell.js";
-class Game {
+import { Ui } from "./Ui.js";
+class Game extends Ui {
   #config = {
     // ========= rendering buttons for each difficult
     easy: {
@@ -18,7 +19,17 @@ class Game {
       mines: 99,
     },
   };
+
+  #numberOfRows = null;
+  #numberOfCols = null;
+  #numberOfmines = null;
+
+  #cells = [];
+
+  #board = null;
+
   initializeGame() {
+    this.#handleElemenst();
     this.#newGame();
   }
 
@@ -31,24 +42,31 @@ class Game {
     this.#numberOfCols = cols;
     this.#numberOfmines = mines;
 
+    this.#setStyles();
     this.#generateCells();
+    this.#renderBoard();
+  }
+
+  #handleElemenst() {
+    this.#board = this.getElement(this.UiSelectors.board);
   }
 
   #generateCells() {
     for (let row = 0; row < this.#numberOfRows; row++) {
       this.#cells[row] = [];
 
-      for (let col = 0; col < this.#numberOfCols; cols++) {
+      for (let col = 0; col < this.#numberOfCols; col++) {
         this.#cells[row].push(new Cell(col, row));
       }
     }
   }
 
-  #numberOfRows = null;
-  #numberOfCols = null;
-  #numberOFmines = null;
-
-  #cells = [];
+  #renderBoard() {
+    this.#cells.flat().forEach((cell) => {
+      this.#board.insertAdjacentHTML("beforeend", cell.createElement());
+      cell.element = cell.getElement(cell.selector);
+    });
+  }
 }
 
 window.onload = function () {
