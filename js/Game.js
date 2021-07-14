@@ -1,6 +1,7 @@
 import { Cell } from "./Cell.js";
 import { Ui } from "./Ui.js";
 import { Counter } from "./Counter.js";
+import { Timer } from "./Timer.js";
 
 class Game extends Ui {
   #config = {
@@ -23,6 +24,7 @@ class Game extends Ui {
   };
 
   #counter = new Counter();
+  #timer = new Timer();
 
   #numberOfRows = null;
   #numberOfCols = null;
@@ -37,6 +39,7 @@ class Game extends Ui {
   initializeGame() {
     this.#handleElemenst();
     this.#counter.init();
+    this.#timer.init();
     this.#newGame();
   }
 
@@ -49,6 +52,7 @@ class Game extends Ui {
     this.#numberOfCols = cols;
     this.#numberOfmines = mines;
     this.#counter.setValue(this.#numberOfmines);
+    this.#timer.startTimer();
 
     this.#setStyles();
     this.#generateCells();
