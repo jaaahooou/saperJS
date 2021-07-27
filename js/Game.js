@@ -57,6 +57,7 @@ class Game extends Ui {
     this.#setStyles();
     this.#generateCells();
     this.#renderBoard();
+    this.#placeMinesInCells();
     this.#cellsElements = this.getElements(this.UiSelectors.cell);
 
     this.#addCellsEventListeners();
@@ -88,6 +89,23 @@ class Game extends Ui {
       this.#board.insertAdjacentHTML("beforeend", cell.createElement());
       cell.element = cell.getElement(cell.selector);
     });
+  }
+
+  #placeMinesInCells() {
+    let minesToPlace = this.#numberOfmines;
+    while (minesToPlace) {
+      const rowIndex = this.#getRandomInteger(0, this.#numberOfRows - 1);
+      const colIndex = this.#getRandomInteger(0, this.#numberOfCols - 1);
+
+      const cell = this.#cells[rowIndex][colIndex];
+
+      const hasCellMine = cell.isMine;
+
+      if (!hasCellMine) {
+        cell.addMine();
+        minesToPlace--;
+      }
+    }
   }
 
   #handleCellClick = (e) => {
@@ -122,6 +140,10 @@ class Game extends Ui {
       "--cells-in-row",
       this.#numberOfCols
     );
+  }
+
+  #getRandomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
 

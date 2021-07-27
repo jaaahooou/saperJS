@@ -3,7 +3,7 @@ import { Ui } from "./Ui.js";
 export class Timer extends Ui {
   #element = null;
   #interval = null;
-  #numberOfSeconds = 0;
+  numberOfSeconds = 0;
   #maxNumberOfSeconds = 999;
 
   init() {
@@ -14,15 +14,15 @@ export class Timer extends Ui {
     this.#interval = setInterval(() => this.#updateTimer(), 1000);
   }
 
-  #stopTimer() {
+  stopTimer() {
     clearInterval(this.#interval);
   }
 
   #updateTimer() {
-    this.#numberOfSeconds++;
-    this.#numberOfSeconds <= this.#maxNumberOfSeconds
-      ? this.#setTimerValue(this.#numberOfSeconds)
-      : this.#stopTimer;
+    this.numberOfSeconds++;
+    this.numberOfSeconds <= this.#maxNumberOfSeconds
+      ? this.#setTimerValue(this.numberOfSeconds)
+      : this.stopTimer;
   }
 
   #setTimerValue(value) {
