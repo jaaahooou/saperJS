@@ -26,6 +26,7 @@ class Game extends Ui {
   #counter = new Counter();
   #timer = new Timer();
 
+  #isGameFinished = false;
   #numberOfRows = null;
   #numberOfCols = null;
   #numberOfmines = null;
@@ -61,6 +62,15 @@ class Game extends Ui {
     this.#cellsElements = this.getElements(this.UiSelectors.cell);
 
     this.#addCellsEventListeners();
+  }
+
+  #endGame(isWin) {
+    this.#isGameFinished = true;
+    this.#timer.stopTimer();
+
+    if (!isWin) {
+      this.#revealMines();
+    }
   }
 
   #handleElemenst() {
@@ -113,7 +123,8 @@ class Game extends Ui {
     const rowIndex = parseInt(target.getAttribute("data-y"), 10);
     const colIndex = parseInt(target.getAttribute("data-x"), 10);
 
-    this.#cells[rowIndex][colIndex].revealCell();
+    const cell = this.#cells[rowIndex][colIndex];
+    this.#clickCell(cell);
   };
 
   #handleCellContextMenu = (e) => {
@@ -134,6 +145,20 @@ class Game extends Ui {
       cell.toggleFlag();
     }
   };
+
+  #clickCell(cell) {
+    if (cell.isMine) {
+      this.#endGame(false);
+    }
+    cell.revealCell();
+  }
+
+  #revealMines() {
+    this.#cells
+      .flat()
+      .filter(({ isMine }) => isMine)
+      .forEach((cell) => cell.revealCell());
+  }
 
   #setStyles() {
     document.documentElement.style.setProperty(
