@@ -185,6 +185,25 @@ class Game extends Ui {
     cell.value = minesCount;
 
     cell.revealCell();
+
+    if (!cell.value) {
+      for (
+        let rowIndex = Math.max(cell.y - 1, 0);
+        rowIndex <= Math.min(cell.y + 1, this.#numberOfRows - 1);
+        rowIndex++
+      ) {
+        for (
+          let colIndex = Math.max(cell.x - 1, 0);
+          colIndex <= Math.min(cell.x + 1, this.#numberOfCols - 1);
+          colIndex++
+        ) {
+          const cell = this.#cells[rowIndex][colIndex];
+          if (!cell.isReveal) {
+            this.#clickCell(cell);
+          }
+        }
+      }
+    }
   }
 
   #setStyles() {
