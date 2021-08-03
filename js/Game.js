@@ -153,7 +153,8 @@ class Game extends Ui {
     if (cell.isMine) {
       this.#endGame(false);
     }
-    cell.revealCell();
+
+    this.#setCellValue(cell);
   }
 
   #revealMines() {
@@ -161,6 +162,29 @@ class Game extends Ui {
       .flat()
       .filter(({ isMine }) => isMine)
       .forEach((cell) => cell.revealCell());
+  }
+  #setCellValue(cell) {
+    let minesCount = 0;
+
+    for (
+      let rowIndex = Math.max(cell.y - 1, 0);
+      rowIndex <= Math.min(cell.y + 1, this.#numberOfRows - 1);
+      rowIndex++
+    ) {
+      for (
+        let colIndex = Math.max(cell.x - 1, 0);
+        colIndex <= Math.min(cell.x + 1, this.#numberOfCols - 1);
+        colIndex++
+      ) {
+        console.log(rowIndex);
+        console.log(colIndex);
+        console.log(this.#cells[rowIndex][colIndex]);
+        if (this.#cells[rowIndex][colIndex].isMine) minesCount++;
+      }
+    }
+    cell.value = minesCount;
+
+    cell.revealCell();
   }
 
   #setStyles() {
