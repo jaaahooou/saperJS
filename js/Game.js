@@ -3,6 +3,7 @@ import { Ui } from "./Ui.js";
 import { Counter } from "./Counter.js";
 import { Timer } from "./Timer.js";
 import { ResetButton } from "./ResetButton.js";
+import { Modal } from "./Modal.js";
 
 class Game extends Ui {
   #config = {
@@ -26,6 +27,7 @@ class Game extends Ui {
 
   #counter = new Counter();
   #timer = new Timer();
+  #modal = new Modal();
 
   #isGameFinished = false;
   #numberOfRows = null;
@@ -35,6 +37,9 @@ class Game extends Ui {
   #cells = [];
 
   #cellsElements = null;
+
+  #cellsToReveal = 0;
+  #revealedCells = 0;
 
   #board = null;
 
@@ -65,6 +70,9 @@ class Game extends Ui {
     this.#counter.setValue(this.#numberOfmines);
     this.#timer.resetTimer();
 
+    this.#cellsToReveal =
+      this.#numberOfCols * this.#numberOfRows - this.#numberOfmines;
+
     this.#setStyles();
     this.#generateCells();
     this.#renderBoard();
@@ -77,9 +85,15 @@ class Game extends Ui {
   #endGame(isWin) {
     this.#isGameFinished = true;
     this.#timer.stopTimer();
+    this.#modal.buttonText = "Close";
 
     if (!isWin) {
       this.#revealMines();
+      this.#modal.infoText = "Toy lost, try again!";
+      this.#buttons.reset.changeEmotion("negative");
+      this.#modal.setText();
+      this.#modal.toggleModal();
+      return;
     }
   }
 
@@ -106,6 +120,8 @@ class Game extends Ui {
   }
 
   #addButtonsEventListeners() {
+    this.#buttons.modal.addEventListener("click", this.#modal.toggleModal);
+
     this.#buttons.easy.addEventListener("click", () =>
       this.#handleNewGameClick(
         this.#config.easy.rows,
@@ -219,6 +235,10 @@ class Game extends Ui {
     }
 
     this.#setCellValue(cell);
+
+    if (this.#revealedCells === this.#cellsToReveal && !this.#isGameFinished) {
+      this.#endGame(true);
+    }
   }
 
   #revealMines() {
@@ -249,6 +269,8 @@ class Game extends Ui {
     cell.value = minesCount;
 
     cell.revealCell();
+
+    this.#revealedCells++;
 
     if (!cell.value) {
       for (
