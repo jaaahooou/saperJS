@@ -63,7 +63,7 @@ class Game extends Ui {
     this.#numberOfCols = cols;
     this.#numberOfmines = mines;
     this.#counter.setValue(this.#numberOfmines);
-    this.#timer.startTimer();
+    this.#timer.resetTimer();
 
     this.#setStyles();
     this.#generateCells();
