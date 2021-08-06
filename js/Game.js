@@ -98,6 +98,13 @@ class Game extends Ui {
     });
   }
 
+  #removeCellsEventListeners() {
+    this.#cellsElements.forEach((element) => {
+      element.removeEventListener("click", this.#handleCellClick);
+      element.removeEventListener("contextmenu", this.#handleCellContextMenu);
+    });
+  }
+
   #addButtonsEventListeners() {
     this.#buttons.easy.addEventListener("click", () =>
       this.#handleNewGameClick(
@@ -133,6 +140,7 @@ class Game extends Ui {
     cols = this.#numberOfCols,
     mines = this.#numberOfmines
   ) {
+    this.#removeCellsEventListeners();
     this.#newGame(rows, cols, mines);
   }
 
