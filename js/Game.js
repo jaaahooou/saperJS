@@ -79,6 +79,11 @@ class Game extends Ui {
     this.#placeMinesInCells();
     this.#cellsElements = this.getElements(this.UiSelectors.cell);
 
+    this.#buttons.reset.changeEmotion("neutral");
+
+    this.#isGameFinished = false;
+    this.#revealedCells = 0;
+
     this.#addCellsEventListeners();
   }
 
@@ -89,12 +94,20 @@ class Game extends Ui {
 
     if (!isWin) {
       this.#revealMines();
-      this.#modal.infoText = "Toy lost, try again!";
+      this.#modal.infoText = "You lost, try again!";
       this.#buttons.reset.changeEmotion("negative");
       this.#modal.setText();
       this.#modal.toggleModal();
       return;
     }
+
+    this.#modal.infoText =
+      this.#timer.numberOfSeconds < this.#timer.maxNumberOfSeconds
+        ? `You won! it took you ${this.#timer.numberOfSeconds} seconds`
+        : `You won`;
+    this.#buttons.reset.changeEmotion("positive");
+    this.#modal.setText();
+    this.#modal.toggleModal();
   }
 
   #handleElements() {
